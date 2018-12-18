@@ -8,9 +8,11 @@
 #
 #   login_check()                   -----> Check if ID and PIN Exist (Return 0 or 1 )
 #   balance_check()                 -----> Check balance (Return balance)
-#   add_balance(balance)            -----> Add Balance
+#   add_balance(balance)            -----> Add Balance to User
 #   id_check()                      -----> Check if ID Exist (Return 0 or 1)
 #   insert_user(balance)            -----> Insert user ID / PIN / Balance
+#   atm_balance_update(balance)     -----> Add balance to ATM
+#   atm_balance_check()             -----> Return ATM Balance
 
 import MySQLdb
 
@@ -31,8 +33,8 @@ cursor = db.cursor()
 
 class DBOperation:
     # __init__ build in function
-    def __init__(self, card1d, pin=0):
-        self.id = card1d  # user ID
+    def __init__(self, id=0, pin=0):
+        self.id = id  # user ID
         self.pin = pin  # user PIN
 
 # ============================================[  Login Check Method  ]==================================================
@@ -105,6 +107,37 @@ class DBOperation:
     def insert_user(self, balance):
         # Insert New User
         sql = "INSERT INTO %s (ID, PIN ,balance ) VALUES (%s, %s, %s)" %(table_name, self.id, self.pin, balance)
+        try:
+            # Execute the SQL command
+            cursor.execute(sql)
+            # Commit your changes in the database
+            db.commit()
+        except:
+            # Rollback in case there is any error
+            db.rollback()
+
+# ============================================[ ATM Balance Check ]=====================================================
+    # Function To Check ATM Balance
+    def atm_balance_check(self):
+        # Get ATM Balance
+        sql = "SELECT balance FROM atm WHERE 1"
+        try:
+            # Execute the SQL command
+            cursor.execute(sql)
+            # Fetch all the rows in a list of lists.
+            results = cursor.fetchall()
+        except:
+            print "Error : Cant Fetch Data"
+        # Change tuple To int
+        balance = int(results[0][0])
+        # Return Value of Balance
+        return balance
+
+# ============================================[ ATM Balance Update ]====================================================
+    # Function To Update ATM Balance
+    def atm_balance_update(self, balance):
+        # Update ATM Balance
+        sql = " UPDATE ATM  SET balance = %s" % balance
         try:
             # Execute the SQL command
             cursor.execute(sql)
