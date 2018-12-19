@@ -172,12 +172,20 @@ class transfer:
 # ===============================================[Fill ATM ]=====================================================
 class ATMFill:
 
-    def __init__(self, atmfill):
-        self.atmfill = atmfill
+    def __init__(self, x200,x100,x50):
+        self.x200 = x200
+        self.x100 = x100
+        self.x50 = x50
+
 
     def filling(self):
         incash = DBOperation(1)
-        existbalance = incash.atm_balance_check()
-        existbalance += self.atmfill
-        incash.atm_balance_update(existbalance)
-        return existbalance
+        incash.atm_x200x100x50_update(self.x200,self.x100,self.x50)
+        x = incash.atm_full_check()
+        t200 = int(x[0][2])
+        t100 = int(x[0][3])
+        t50 = int(x[0][4])
+        sum_of_balance=200*t200 + 100*t100 + 50*t50
+        incash.atm_balance_update(sum_of_balance)
+
+        return sum_of_balance

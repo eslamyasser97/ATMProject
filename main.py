@@ -66,7 +66,7 @@ while option1 == 0 and option2 != 0:
 # =========/Class DBOperation/========
 # ===      Get User Balance        ===
     object1 = DBOperation(ID)
-    atmbc = object1.atm_balance_check()
+    atmbc = object1.atm_full_check()
 # ====================================
 
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -82,12 +82,16 @@ if flag == 2:
         balance = AtmBalance.atm_balance_check()
         print "ATM Balance Is %s" % balance
     if x == 2:
-        print "Enter Cash"
-        x = int(input())
+        print "Enter Cash 200"
+        x200 = int(input())
+        print "Enter Cash 100"
+        x100 = int(input())
+        print "Enter Cash 50"
+        x50 = int(input())
 
         # =========/Class ATMFill/====================
         # ===      Return ATM Balnce               ===
-        AtmBalanceInsert = ATMFill(x)
+        AtmBalanceInsert = ATMFill(x200, x100, x50)
         existbalance = AtmBalanceInsert.filling()
         # =============================================
 
@@ -118,7 +122,7 @@ elif flag == 1:
         check = get_money.gui_balance_check()
         # =======================================
         if check == 999:
-            print "Srry ATM Dont Have Enought Money"
+            print "Sorry ATM Dont Have Enought Money"
             print(time.asctime())
         elif check == 1:
             print "withdraw Done Your balance Now is %s" % get_money.b
