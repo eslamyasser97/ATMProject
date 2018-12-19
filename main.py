@@ -1,19 +1,35 @@
 # Importing
 import time
 from operations import *
+from data_logs import *
 
 
 # =======================================[ User Info ]==================================================================
 ID = 1234  # --------------/////------/////-----> Ramon Ramon
 PIN = 0  # default value
 ID2 = 0  # default value
-
+from time import gmtime, strftime
+userday = strftime("%d", gmtime())
+usertime = strftime("%H:%M:%S")
+userhist = time.asctime()
 
 # =======================================[ Window1.. Check Login ]======================================================
 option1 = 0
 option2 = 3
 
 print(time.asctime())
+
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+from time import gmtime, strftime
+print strftime("%a, %d %b %Y %H:%M:%S +0000")
+
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 while option1 == 0 and option2 != 0:
     print "Enter ur PIN"
@@ -87,6 +103,7 @@ elif flag == 1:
     print "press 2 to Enter depposite "
     print "press 3 to Enter CheckBalance "
     print "press 4 to Enter Transfer "
+    print "press 5 to Check History "
     x = int(input())  # --------------/////------/////-----> Ramon (Button Return Number 1 to 4)
 
 
@@ -97,7 +114,7 @@ elif flag == 1:
 
         # ===========/Class withdraw/============
         # ===      Return 0 or 1              ===
-        get_money = withdraw(ID, PIN, b, cash, atmbc)
+        get_money = withdraw(ID, PIN, b, cash, atmbc, userhist, userday, usertime)
         check = get_money.gui_balance_check()
         # =======================================
         if check == 999:
@@ -106,6 +123,10 @@ elif flag == 1:
         elif check == 1:
             print "withdraw Done Your balance Now is %s" % get_money.b
             print(time.asctime())
+        elif check == 666:
+            print "Max Value To withdraw 5000"
+        elif check == 222:
+            print "You Cant withdraw More Than 5000 per Day"
         else:
             print "You Dont Have Enough Money"
             print(time.asctime())
@@ -118,11 +139,16 @@ elif flag == 1:
 
     # =============/class depposite/==============
     # ====      Add Balance                    ===
-        get_money2 = depposite(ID, PIN, b, cash, atmbc)
-        get_money2.add_balance()
+        get_money2 = depposite(ID, PIN, b, cash, atmbc, userhist, userday, usertime)
+        check = get_money2.add_balance()
     # ============================================
-        print "Your Balance Now is %s" % get_money2.b
-        print(time.asctime())
+        if check == 1:
+            print "Your Balance Now is %s" % get_money2.b
+            print(time.asctime())
+        elif check == 222:
+            print "You Cant Deposite More than 40000 Per Day"
+        elif check == 0:
+            print "Max Value TO Deppsite 40000"
 
 
 # ========================================[ Windows5..CheckBalance ]====================================================
@@ -165,6 +191,19 @@ elif flag == 1:
                 print "You Dont Have Enought"
         else:
             print "Wrong ID"
+# ========================================[ Windows7..History ]========================================================
+    elif x == 5:
+        datalogs = date_logs(ID)
+        results = datalogs.get_history()
+        # Print History
+        print "---------------------------------------------------------------------------------------"
+        print "|      Date               |       Operation      |  Total widthdrow | TotalDeppsite    |"
+        print "---------------------------------------------------------------------------------------"
+        for result in results:
+
+            print "|%s |  %s   |        %s      |       %s        |" % (result[2], result[5], result[7], result[8])
+            print "---------------------------------------------------------------------------------------"
+
 else:
     print "You Dont Have More Chance"
 
