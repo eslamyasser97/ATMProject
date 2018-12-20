@@ -150,9 +150,9 @@ class DBOperation:
 
 # ============================================[ Update 200 / 100/ 50 values ]===========================================
     # Function To Update Update 200 / 100/ 50 values
-    def atm_x200x100x50_update(self, x200, x100, x50):
+    def atm_x200x100x50_update(self, x200, x100, x50, x20, x10):
         # Update ATM Balance
-        sql = "UPDATE `atm` SET `200` = '%s', `100` = '%s', `50` = '%s' WHERE `atm`.`id` = 1" % (x200, x100, x50)
+        sql = "UPDATE `atm` SET `200` = '%s', `100` = '%s', `50` = '%s', `20` = '%s', `10` = '%s' WHERE `atm`.`id` = 1" % (x200, x100, x50, x20, x10)
         try:
             # Execute the SQL command
             cursor.execute(sql)
